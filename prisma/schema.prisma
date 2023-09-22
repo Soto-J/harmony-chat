@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Profile {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String    @unique
+  name      String
+  imageUrl  String    @db.Text
+  email     String    @db.Text
+  Server    Server[]
+  Member    Member[]
+  Channel   Channel[]
+}
+
+model Server {
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  name       String
+  imageUrl   String    @db.Text
+  inviteCode String    @db.Text
+  members    Member[]
+  Channel    Channel[]
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Member {
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  role      MemberRole @default(GUEST)
+
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  serverId  String  @unique
+  Server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, serverId])
+}
+
+enum ChannelType {
+  TEXT
+  VOICE
+  VIDEO
+}
+
+model Channel {
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  name      String
+  type      ChannelType @default(TEXT)
+
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  serverId  String  @unique
+  Server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, serverId])
+}
