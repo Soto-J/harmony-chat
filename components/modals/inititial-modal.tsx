@@ -16,9 +16,13 @@ import {
   Form,
   FormControl,
   FormField,
+  FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Server name is required" }),
@@ -26,6 +30,12 @@ const formSchema = z.object({
 });
 
 const InititialModal = () => {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,6 +50,10 @@ const InititialModal = () => {
     console.log(values);
   };
 
+  if (!isHydrated) {
+    return null;
+  }
+
   return (
     <Dialog open>
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
@@ -47,11 +61,65 @@ const InititialModal = () => {
           <DialogTitle className="text-center text-2xl font-bold">
             Customize your server
           </DialogTitle>
+
           <DialogDescription className="text-center text-gray-500">
             Give your server a personality with a name and an image. You can
             always change it later.
           </DialogDescription>
         </DialogHeader>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-8 px-6">
+              <div className="flex items-center justify-center text-center">
+                TODO: Add image upload
+              </div>
+
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel
+                      className="
+                        text-xs 
+                        font-bold 
+                        uppercase
+                        text-zinc-500
+                        dark:text-secondary/70
+                      "
+                    >
+                      Server name
+                    </FormLabel>
+
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isLoading}
+                        placeholder="Enter a server name"
+                        className="
+                          border-0 
+                          bg-zinc-50 
+                          text-black 
+                          focus-visible:ring-0 
+                          focus-visible:ring-offset-0
+                        "
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <DialogFooter className="bg-gray-100 px-6 py-4">
+              <Button variant="primary" disabled={isLoading}>
+                Create
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
