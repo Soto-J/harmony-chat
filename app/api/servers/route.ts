@@ -5,9 +5,9 @@ import { MemberRole } from "@prisma/client";
 
 import { v4 as uuidv4 } from "uuid";
 
-export async function POST(response: Response) {
+export async function POST(request: Request) {
   try {
-    const { name, imageUrl } = await response.json();
+    const { name, imageUrl } = await request.json();
     const profile = await currentProfile();
 
     if (!profile) {
