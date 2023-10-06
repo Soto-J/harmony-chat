@@ -19,9 +19,9 @@ model Profile {
   name      String
   imageUrl  String    @db.Text
   email     String    @db.Text
-  Server    Server[]
-  Member    Member[]
-  Channel   Channel[]
+  servers   Server[]
+  members   Member[]
+  channels  Channel[]
 }
 
 model Server {
@@ -32,7 +32,7 @@ model Server {
   imageUrl   String    @db.Text
   inviteCode String    @db.Text
   members    Member[]
-  Channel    Channel[]
+  channels   Channel[]
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -76,7 +76,7 @@ model Channel {
   profileId String  @unique
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   serverId  String  @unique
-  Server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   @@index([profileId, serverId])
 }
