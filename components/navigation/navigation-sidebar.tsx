@@ -1,9 +1,14 @@
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-import Image from "next/image";
+
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 import NavigationAction from "./navigation-action";
+import NavigationItem from "./navigation-item";
 
 const NavigationSidebar = async () => {
   const profile = await currentProfile();
@@ -15,8 +20,6 @@ const NavigationSidebar = async () => {
   const servers = await db.server.findMany({
     where: { profileId: profile.id },
   });
-
-  console.log(servers);
 
   return (
     <div
@@ -33,17 +36,29 @@ const NavigationSidebar = async () => {
       "
     >
       <NavigationAction />
-      {/* {servers.map((val) => (
-        <div key={val.id} className="">
-          <Image
-            src={val.imageUrl}
-            alt="Server Icon"
-            width={50}
-            height={50}
-            className="rounded-full"
-          />
-        </div>
-      ))} */}
+
+      <Separator
+        className="
+          mx-auto 
+          h-[2px]
+          w-10
+          rounded-md
+          bg-zinc-300
+          dark:bg-zinc-700
+        "
+      />
+
+      <ScrollArea className="w-full flex-1">
+        {servers.map((server) => (
+          <div key={server.id} className="mb-4">
+            <NavigationItem
+              id={server.id}
+              name={server.name}
+              imageUrl={server.imageUrl}
+            />
+          </div>
+        ))}
+      </ScrollArea>
     </div>
   );
 };
