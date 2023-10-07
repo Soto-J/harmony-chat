@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
+import Image from "next/image";
+import NavigationAction from "./navigation-action";
 
 const NavigationSidebar = async () => {
   const profile = await currentProfile();
@@ -30,9 +32,18 @@ const NavigationSidebar = async () => {
         dark:bg-[#1e1f22]
       "
     >
-      {servers.map((val) => (
-        <div key={val.id}>{val.name}</div>
-      ))}
+      <NavigationAction />
+      {/* {servers.map((val) => (
+        <div key={val.id} className="">
+          <Image
+            src={val.imageUrl}
+            alt="Server Icon"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+        </div>
+      ))} */}
     </div>
   );
 };
