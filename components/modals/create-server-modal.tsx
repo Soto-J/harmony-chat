@@ -52,6 +52,7 @@ const CreateServerModal = () => {
     try {
       await axios.post("/api/servers", values);
 
+      onClose();
       form.reset();
       router.refresh();
     } catch (error) {
@@ -78,7 +79,7 @@ const CreateServerModal = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form} >
+        <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">

@@ -12,30 +12,32 @@ datasource db {
 }
 
 model Profile {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  userId    String    @unique
-  name      String
-  imageUrl  String    @db.Text
-  email     String    @db.Text
-  servers   Server[]
-  members   Member[]
-  channels  Channel[]
+  id       String    @id @default(uuid())
+  userId   String    @unique
+  name     String
+  imageUrl String    @db.Text
+  email    String    @db.Text
+  servers  Server[]
+  members  Member[]
+  channels Channel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Server {
   id         String    @id @default(uuid())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
   name       String
   imageUrl   String    @db.Text
-  inviteCode String    @db.Text
+  inviteCode String    @unique
   members    Member[]
   channels   Channel[]
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([profileId])
 }
@@ -47,15 +49,16 @@ enum MemberRole {
 }
 
 model Member {
-  id        String     @id @default(uuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  role      MemberRole @default(GUEST)
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
 
   profileId String  @unique
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   serverId  String  @unique
   Server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([profileId, serverId])
 }
@@ -67,16 +70,17 @@ enum ChannelType {
 }
 
 model Channel {
-  id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  name      String
-  type      ChannelType @default(TEXT)
+  id   String      @id @default(uuid())
+  name String
+  type ChannelType @default(TEXT)
 
   profileId String  @unique
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   serverId  String  @unique
   server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([profileId, serverId])
 }

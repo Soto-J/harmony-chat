@@ -7,7 +7,7 @@ import { useModalStore } from "@/hooks/use-modal-store";
 import CreateServerModal from "../modals/create-server-modal";
 
 const NavigationAction = () => {
-  const { isOpen, onOpen, type } = useModalStore();
+  const { onOpen } = useModalStore();
 
   return (
     <div>
