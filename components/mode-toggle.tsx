@@ -16,7 +16,11 @@ export function ModeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          size="icon"
+          className="border-0 bg-transparent"
+        >
           <Sun
             className="
               h-[1.2rem] 

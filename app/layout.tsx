@@ -4,6 +4,7 @@ import { Open_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
+import ModalProvider from "@/components/providers/modal-provider";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -24,11 +25,11 @@ export default function RootLayout({
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            // forcedTheme="dark"
             enableSystem={false}
             disableTransitionOnChange
             storageKey="harmony-theme"
           >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>
