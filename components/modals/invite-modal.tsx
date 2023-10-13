@@ -13,10 +13,13 @@ import { useModalStore } from "@/hooks/use-modal-store";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useOrigin } from "@/hooks/use-origin";
 
 const CreateServerModal = () => {
-  const router = useRouter();
   const { isOpen, onClose, type } = useModalStore();
+  const origin = useOrigin();
+
+  const inviteLink = `${origin}`;
 
   const isModalOpen = isOpen && type === "invite";
 
@@ -42,7 +45,7 @@ const CreateServerModal = () => {
           </Label>
           <div className="mt-2 flex items-center gap-x-2">
             <Input
-              value="invite-link"
+              value={inviteLink}
               className="
                 border-0
                 bg-zinc-300/50
@@ -51,7 +54,7 @@ const CreateServerModal = () => {
                 focus-visible:ring-offset-0
               "
             />
-            <Button size="icon">
+            <Button size="icon" onClick={() => console.log("Click!")}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -60,7 +63,7 @@ const CreateServerModal = () => {
             size="sm"
             className="mt-4 text-xs text-zinc-500"
           >
-            Generate a New Link
+            Generate a new link
             <RefreshCw className="ml-2 h-4 w-4" />
           </Button>
         </div>
