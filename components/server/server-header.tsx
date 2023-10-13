@@ -17,6 +17,7 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
+import { useModalStore } from "@/hooks/use-modal-store";
 
 type ServerHeadderProps = {
   server: ServerWithChannelsAndMembers;
@@ -24,6 +25,7 @@ type ServerHeadderProps = {
 };
 
 const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
+  const { onOpen } = useModalStore();
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
@@ -97,6 +99,7 @@ const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
         )} */}
         {isModerator && (
           <DropdownMenuItem
+            onClick={() => onOpen("invite", { server })}
             className="
               cursor-pointer
               px-3
