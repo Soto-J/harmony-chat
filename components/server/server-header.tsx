@@ -1,3 +1,5 @@
+"use client";
+
 import type { ServerWithChannelsAndMembers } from "@/types";
 import { MemberRole } from "@prisma/client";
 
