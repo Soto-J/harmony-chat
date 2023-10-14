@@ -52,7 +52,7 @@ const CreateServerModal = () => {
 
       onOpen("invite", { server: response.data });
     } catch (error) {
-      console.log("[ERROR] - generateNewLink", error);
+      console.log("[ERROR] - generateNewLink", { error });
     } finally {
       setIsLoading(false);
     }
