@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Check, Copy, RefreshCw } from "lucide-react";
 import axios from "axios";
 
@@ -9,21 +10,24 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useOrigin } from "@/hooks/use-origin";
 import { useModalStore } from "@/hooks/use-modal-store";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useOrigin } from "@/hooks/use-origin";
-import { useState } from "react";
 
 const CreateServerModal = () => {
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { isOpen, onOpen, onClose, type, data } = useModalStore();
   const origin = useOrigin();
-
-  const { server } = data;
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    type,
+    data: { server },
+  } = useModalStore();
 
   const inviteLink = `${origin}/invite/${server?.inviteCode}`;
 
@@ -43,7 +47,7 @@ const CreateServerModal = () => {
       setIsLoading(true);
 
       const response = await axios.patch(
-        `/api/server/${server?.id}/invite-code`,
+        `/api/servers/${server?.id}/invite-code`,
       );
 
       onOpen("invite", { server: response.data });
