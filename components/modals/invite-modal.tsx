@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { Copy, RefreshCw } from "lucide-react";
+import { Check, Copy, RefreshCw } from "lucide-react";
+import axios from "axios";
 
 import {
   Dialog,
@@ -14,14 +14,45 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useOrigin } from "@/hooks/use-origin";
+import { useState } from "react";
 
 const CreateServerModal = () => {
-  const { isOpen, onClose, type } = useModalStore();
+  const [copied, setCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { isOpen, onOpen, onClose, type, data } = useModalStore();
   const origin = useOrigin();
 
-  const inviteLink = `${origin}`;
+  const { server } = data;
+
+  const inviteLink = `${origin}/invite/${server?.inviteCode}`;
 
   const isModalOpen = isOpen && type === "invite";
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(inviteLink);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
+
+  const generateNewLink = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await axios.patch(
+        `/api/server/${server?.id}/invite-code`,
+      );
+
+      onOpen("invite", { server: response.data });
+    } catch (error) {
+      console.log("[ERROR] - generateNewLink", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
@@ -46,6 +77,7 @@ const CreateServerModal = () => {
           <div className="mt-2 flex items-center gap-x-2">
             <Input
               value={inviteLink}
+              disabled={isLoading}
               className="
                 border-0
                 bg-zinc-300/50
@@ -54,11 +86,17 @@ const CreateServerModal = () => {
                 focus-visible:ring-offset-0
               "
             />
-            <Button size="icon" onClick={() => console.log("Click!")}>
-              <Copy className="h-4 w-4" />
+            <Button size="icon" onClick={onCopy} disabled={isLoading}>
+              {copied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
           <Button
+            onClick={generateNewLink}
+            disabled={isLoading}
             variant="link"
             size="sm"
             className="mt-4 text-xs text-zinc-500"
