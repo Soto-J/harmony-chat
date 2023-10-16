@@ -31,20 +31,6 @@ const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
-  const dropDownItems = [
-    {
-      role: MemberRole.MODERATOR,
-      text: "Invite People",
-      icon: UserPlus,
-      fontPurple: true,
-    },
-    { role: MemberRole.ADMIN, text: "Server Settings", icon: Settings },
-    { role: MemberRole.ADMIN, text: "Manage Members", icon: Users },
-    { role: MemberRole.MODERATOR, text: "Create Channel", icon: PlusCircle },
-  ];
-
-  const moderatorItems = [];
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="focus:outline-none">
@@ -80,25 +66,6 @@ const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
           dark:text-neutral-400
         "
       >
-        {/* {dropDownItems.map(
-          (item) =>
-            role === "ADMIN" && (
-              <DropdownMenuItem
-                key={item.text}
-                className={`
-                  cursor-pointer 
-                  px-3 
-                  py-2 
-                  text-sm
-                  ${item.fontPurple && "text-indigo-600 dark:text-indigo-400"}
-                `}
-              >
-                {item.text}
-                <item.icon className="ml-auto h-4 w-4" />
-              </DropdownMenuItem>
-              
-            ),
-        )} */}
         {isModerator && (
           <DropdownMenuItem
             onClick={() => onOpen("invite", { server })}
@@ -116,19 +83,28 @@ const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className="cursor-pointer px-3 py-2 text-sm">
+          <DropdownMenuItem
+            onClick={() => onOpen("editServer", { server })}
+            className="cursor-pointer px-3 py-2 text-sm"
+          >
             Server Settings
             <Settings className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className="cursor-pointer px-3 py-2 text-sm">
+          <DropdownMenuItem
+            onClick={() => {}}
+            className="cursor-pointer px-3 py-2 text-sm"
+          >
             Manage Members
             <Users className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
         )}
         {isModerator && (
-          <DropdownMenuItem className="cursor-pointer px-3 py-2 text-sm">
+          <DropdownMenuItem
+            onClick={() => {}}
+            className="cursor-pointer px-3 py-2 text-sm"
+          >
             Create Channel
             <PlusCircle className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
@@ -137,13 +113,19 @@ const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
         {isModerator && <DropdownMenuSeparator />}
 
         {isAdmin && (
-          <DropdownMenuItem className="cursor-pointer px-3 py-2 text-sm text-rose-500">
+          <DropdownMenuItem
+            onClick={() => {}}
+            className="cursor-pointer px-3 py-2 text-sm text-rose-500"
+          >
             Delete Server
             <Trash className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
         )}
         {!isAdmin && (
-          <DropdownMenuItem className="cursor-pointer px-3 py-2 text-sm text-rose-500">
+          <DropdownMenuItem
+            onClick={() => {}}
+            className="cursor-pointer px-3 py-2 text-sm text-rose-500"
+          >
             Leave Server
             <LogOut className="ml-auto h-4 w-4" />
           </DropdownMenuItem>

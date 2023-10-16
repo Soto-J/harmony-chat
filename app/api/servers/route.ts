@@ -15,7 +15,6 @@ export async function POST(request: Request) {
     }
     console.log("[PROFILE]", profile);
 
-    // Recieving error on second server creation
     const server = await db.server.create({
       data: {
         profileId: profile.id,
