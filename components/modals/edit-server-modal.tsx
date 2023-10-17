@@ -38,11 +38,11 @@ const EditServerModal = () => {
   const {
     isOpen,
     onClose,
-    type,
+    modalType,
     data: { server },
   } = useModalStore();
 
-  const isModalOpen = isOpen && type === "editServer";
+  const isModalOpen = isOpen && modalType === "editServer";
 
   const form = useForm({
     resolver: zodResolver(formSchema),

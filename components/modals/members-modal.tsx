@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const CreateServerModal = () => {
+const MembersModal = () => {
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +31,7 @@ const CreateServerModal = () => {
 
   const inviteLink = `${origin}/invite/${server?.inviteCode}`;
 
-  const isModalOpen = isOpen && modalType === "invite";
+  const isModalOpen = isOpen && modalType === "members";
 
   const onCopy = () => {
     navigator.clipboard.writeText(inviteLink);
@@ -114,4 +114,4 @@ const CreateServerModal = () => {
   );
 };
 
-export default CreateServerModal;
+export default MembersModal;
