@@ -1,7 +1,7 @@
 import { Member, Prisma, Profile, Server } from "@prisma/client";
 
 const server = Prisma.validator<Prisma.ServerDefaultArgs>()({
-  include: { channels: true, members: true },
+  include: { channels: true, members: { include: { profile: true } } },
 });
 
 export type ServerWithChannelsAndMembers = Prisma.ServerGetPayload<

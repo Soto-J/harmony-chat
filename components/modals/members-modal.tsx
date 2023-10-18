@@ -1,114 +1,77 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, RefreshCw } from "lucide-react";
-import axios from "axios";
+import { useModalStore } from "@/hooks/use-modal-store";
+import { ServerWithChannelsAndMembers } from "@/types";
 
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useOrigin } from "@/hooks/use-origin";
-import { useModalStore } from "@/hooks/use-modal-store";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import UserAvatar from "@/components/user-avatar";
+import { ShieldAlert, ShieldCheck } from "lucide-react";
+
+const roleIconMap = {
+  GUEST: null,
+  MODERATOR: <ShieldCheck className="ml-2 h-4 w-4 text-indigo-500" />,
+  ADMIN: <ShieldAlert className="ml-2 h-4 w-4 text-rose-500" />,
+};
 
 const MembersModal = () => {
-  const [copied, setCopied] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const origin = useOrigin();
-  const {
-    isOpen,
-    onOpen,
-    onClose,
-    modalType,
-    data: { server },
-  } = useModalStore();
-
-  const inviteLink = `${origin}/invite/${server?.inviteCode}`;
+  const [loadingId, setLoadingId] = useState("");
+  const { isOpen, onOpen, onClose, modalType, data } = useModalStore();
+  const { server } = data as { server: ServerWithChannelsAndMembers };
 
   const isModalOpen = isOpen && modalType === "members";
 
-  const onCopy = () => {
-    navigator.clipboard.writeText(inviteLink);
-    setCopied(true);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
-  };
-
-  const generateNewLink = async () => {
-    try {
-      setIsLoading(true);
-
-      const response = await axios.patch(
-        `/api/servers/${server?.id}/invite-code`,
-      );
-
-      onOpen("invite", { server: response.data });
-    } catch (error) {
-      console.log("[ERROR] - generateNewLink", { error });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const members =
+    server?.members?.length > 1
+      ? `${server.members.length} Members`
+      : `${server?.members?.length} Member`;
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="overflow-hidden bg-white p-0 text-black">
+      <DialogContent className="overflow-hidden bg-white text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Invite Friends
+            Manage Members
           </DialogTitle>
+          <DialogDescription className="text-center text-zinc-500">
+            {members}
+          </DialogDescription>
         </DialogHeader>
-        <div className="p-6">
-          <Label
-            className="
-              text-xs 
-              font-bold 
-              uppercase 
-              text-zinc-500 
-              dark:text-secondary/70
-            "
-          >
-            Server Invite Link
-          </Label>
-          <div className="mt-2 flex items-center gap-x-2">
-            <Input
-              value={inviteLink}
-              disabled={isLoading}
-              className="
-                border-0
-                bg-zinc-300/50
-                text-black
-                focus-visible:ring-0
-                focus-visible:ring-offset-0
-              "
-            />
-            <Button size="icon" onClick={onCopy} disabled={isLoading}>
-              {copied ? (
-                <Check className="h-4 w-4" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
-          <Button
-            onClick={generateNewLink}
-            disabled={isLoading}
-            variant="link"
-            size="sm"
-            className="mt-4 text-xs text-zinc-500"
-          >
-            Generate a new link
-            <RefreshCw className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
+
+        <ScrollArea className="mt-8 max-h-[420px] pr-6">
+          {server?.members?.map((member) => (
+            <div key={member.id} className="mb-6 flex items-center gap-x-2">
+              <UserAvatar src={member.profile.imageUrl} className="" />
+              <div className="flex flex-col gap-y-1">
+                <div className="flex items-center text-xs font-semibold">
+                  {member.profile.name}
+                  {roleIconMap[member.role]}
+                </div>
+                <p className="text-xs text-zinc-500">{member.profile.email}</p>
+              </div>
+              {server.profileId !== member.profileId &&
+                loadingId !== member.id && (
+                  <div className="ml-auto">Actions!</div>
+                )}
+            </div>
+          ))}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

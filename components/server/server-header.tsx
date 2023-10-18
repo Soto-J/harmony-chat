@@ -21,12 +21,12 @@ import {
 } from "lucide-react";
 import { useModalStore } from "@/hooks/use-modal-store";
 
-type ServerHeadderProps = {
+type ServerHeaderProps = {
   server: ServerWithChannelsAndMembers;
   role?: MemberRole;
 };
 
-const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
+const ServerHeader = ({ server, role }: ServerHeaderProps) => {
   const { onOpen } = useModalStore();
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
@@ -135,4 +135,4 @@ const ServerHeadder = ({ server, role }: ServerHeadderProps) => {
   );
 };
 
-export default ServerHeadder;
+export default ServerHeader;

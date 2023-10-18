@@ -7,6 +7,7 @@ import { UserButton } from "@clerk/nextjs";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/components/mode-toggle";
+
 import NavigationAction from "./navigation-action";
 import NavigationItem from "./navigation-item";
 
@@ -18,7 +19,11 @@ const NavigationSidebar = async () => {
   }
 
   const servers = await db.server.findMany({
-    where: { profileId: profile.id },
+    where: {
+      members: {
+        some: { profileId: profile.id },
+      },
+    },
   });
 
   return (
@@ -59,7 +64,7 @@ const NavigationSidebar = async () => {
           </div>
         ))}
       </ScrollArea>
-      
+
       <div
         className="
           mt-auto
