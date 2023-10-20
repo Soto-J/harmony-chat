@@ -7,7 +7,7 @@ type Params = {
   serverId: string;
 };
 
-export async function DELETE(request: Request, { params }: { params: Params }) {
+export async function PATCH(request: Request, { params }: { params: Params }) {
   try {
     const profile = await currentProfile();
 

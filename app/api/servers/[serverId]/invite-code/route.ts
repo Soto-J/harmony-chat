@@ -31,6 +31,10 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
       },
     });
 
+    if (!server) {
+      return new NextResponse("Something went wrong", { status: 404 });
+    }
+    
     return NextResponse.json(server);
   } catch (error) {
     console.log("[SERVER_ID]", error);

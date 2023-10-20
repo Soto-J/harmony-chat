@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const LeaveServerModal = () => {
+const DeleteServerModal = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -27,13 +27,13 @@ const LeaveServerModal = () => {
     data: { server },
   } = useModalStore();
 
-  const isModalOpen = isOpen && modalType === "leaveServer";
+  const isModalOpen = isOpen && modalType === "deleteServer";
 
   const onConfirm = async () => {
     try {
       setIsLoading(true);
 
-      await axios.patch(`/api/servers/${server?.id}/leave`);
+      await axios.delete(`/api/servers/${server?.id}`);
 
       onClose();
       router.refresh();
@@ -49,14 +49,15 @@ const LeaveServerModal = () => {
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Leave Server
+            Delete Server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Are you sure you want to leave{" "}
+            Are you sure you want to do this?
+            <br />
             <span className="font-semibold text-indigo-500">
               {server?.name}
-            </span>
-            ?
+            </span>{" "}
+            will be permanently deleted.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
@@ -79,4 +80,4 @@ const LeaveServerModal = () => {
   );
 };
 
-export default LeaveServerModal;
+export default DeleteServerModal;
