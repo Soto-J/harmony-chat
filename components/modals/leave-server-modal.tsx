@@ -1,25 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, RefreshCw } from "lucide-react";
-import axios from "axios";
 
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useOrigin } from "@/hooks/use-origin";
 import { useModalStore } from "@/hooks/use-modal-store";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const LeaveServerModal = () => {
-  const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
   const {
     isOpen,
     onOpen,
@@ -30,6 +29,21 @@ const LeaveServerModal = () => {
 
   const isModalOpen = isOpen && modalType === "leaveServer";
 
+  const onConfirm = async () => {
+    try {
+      setIsLoading(true);
+
+      await axios.delete(`/api/servers/${server?.id}/leave`);
+
+      onClose();
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
@@ -37,8 +51,29 @@ const LeaveServerModal = () => {
           <DialogTitle className="text-center text-2xl font-bold">
             Leave Server
           </DialogTitle>
+          <DialogDescription className="text-center text-zinc-500">
+            Are you sure you want to leave{" "}
+            <span className="font-semibold text-indigo-500">
+              {server?.name}
+            </span>
+            ?
+          </DialogDescription>
         </DialogHeader>
-        <div className="p-6"></div>
+        <DialogFooter className="bg-gray-100 px-6 py-4">
+          <div className="flex w-full items-center justify-between">
+            <Button
+              onClick={onClose}
+              disabled={isLoading}
+              variant="ghost"
+              className="focus:outline-none"
+            >
+              Cancel
+            </Button>
+            <Button onClick={onConfirm} disabled={isLoading} variant="primary">
+              Confirm
+            </Button>
+          </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
