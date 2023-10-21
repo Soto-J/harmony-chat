@@ -10,6 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useParams, useRouter } from "next/navigation";
 
 type ServerSearchProps = {
   data: {
@@ -27,6 +28,8 @@ type ServerSearchProps = {
 
 const ServerSearch = ({ data }: ServerSearchProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const params = useParams();
 
   // Keyboard shortcut to open the command dialog
   useEffect(() => {
@@ -42,6 +45,24 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
 
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  const onClick = ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "channel" | "member";
+  }) => {
+    setIsOpen(false);
+
+    if (type === "member") {
+      router.push(`/servers/${params?.serverId}/conversations/${id}`);
+    }
+
+    if (type === "channel") {
+      router.push(`/servers/${params?.serverId}/channels/${id}`);
+    }
+  };
 
   return (
     <>
@@ -113,7 +134,7 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
               <CommandGroup key={label} heading={label}>
                 {data?.map(({ id, name, icon }) => {
                   return (
-                    <CommandItem onClick={() => {}} key={id}>
+                    <CommandItem onClick={() => onClick({ id, type })} key={id}>
                       {icon}
                       <span className="ml-2">{name}</span>
                     </CommandItem>
