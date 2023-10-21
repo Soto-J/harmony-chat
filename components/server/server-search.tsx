@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import {
   CommandDialog,
@@ -27,6 +27,21 @@ type ServerSearchProps = {
 
 const ServerSearch = ({ data }: ServerSearchProps) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Keyboard shortcut to open the command dialog
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
+
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        setIsOpen((prev) => !prev);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <>
