@@ -30,7 +30,6 @@ export async function POST(request: Request) {
       },
     });
 
-
     return NextResponse.json(server);
   } catch (error) {
     console.log("[SERVERS_ERROR]", error);

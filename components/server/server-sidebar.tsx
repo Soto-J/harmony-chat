@@ -60,12 +60,10 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const videoChannels = server.channels.filter(
     (channel) => channel.type === ChannelType.VIDEO,
   );
-  console.log("server 1", server.members);
   const members = server.members.filter(
     (member) => member.profileId !== profile.id,
   );
 
-  console.log("server 2", members);
   const profileRole = server.members.find(
     (member) => member.profileId === profile.id,
   )?.role;

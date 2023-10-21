@@ -98,7 +98,7 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
               <CommandGroup key={label} heading={label}>
                 {data?.map(({ id, name, icon }) => {
                   return (
-                    <CommandItem key={id}>
+                    <CommandItem onClick={() => {}} key={id}>
                       {icon}
                       <span className="ml-2">{name}</span>
                     </CommandItem>
