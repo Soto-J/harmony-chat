@@ -60,11 +60,12 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const videoChannels = server.channels.filter(
     (channel) => channel.type === ChannelType.VIDEO,
   );
-
+  console.log("server 1", server.members);
   const members = server.members.filter(
     (member) => member.profileId !== profile.id,
   );
 
+  console.log("server 2", members);
   const profileRole = server.members.find(
     (member) => member.profileId === profile.id,
   )?.role;
@@ -96,7 +97,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 })),
               },
               {
-                label: "Vocie Channel",
+                label: "Voice Channel",
                 type: "channel",
                 data: voiceChannels.map((channel) => ({
                   id: channel.id,
@@ -105,7 +106,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 })),
               },
               {
-                label: "Vocie Channel",
+                label: "Video Channel",
                 type: "channel",
                 data: videoChannels.map((channel) => ({
                   id: channel.id,
@@ -115,7 +116,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               },
               {
                 label: "Members",
-                type: "channel",
+                type: "member",
                 data: members.map((member) => ({
                   id: member.id,
                   name: member.profile.name,

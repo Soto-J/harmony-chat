@@ -1,6 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { Search } from "lucide-react";
+import {
+  CommandDialog,
+  CommandGroup,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
 type ServerSearchProps = {
   data: {
@@ -15,10 +24,14 @@ type ServerSearchProps = {
       | undefined;
   }[];
 };
+
 const ServerSearch = ({ data }: ServerSearchProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <button
+        onClick={() => setIsOpen(true)}
         className="
           group
           flex
@@ -69,6 +82,33 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
           <span className="text-sm">CTRL</span>K
         </kbd>
       </button>
+
+      <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
+        <CommandInput placeholder="Search all channels and members" />
+
+        <CommandList>
+          <CommandEmpty>No Results Found.</CommandEmpty>
+
+          {data.map(({ label, type, data }) => {
+            if (!data?.length) {
+              return null;
+            }
+
+            return (
+              <CommandGroup key={label} heading={label}>
+                {data?.map(({ id, name, icon }) => {
+                  return (
+                    <CommandItem key={id}>
+                      {icon}
+                      <span className="ml-2">{name}</span>
+                    </CommandItem>
+                  );
+                })}
+              </CommandGroup>
+            );
+          })}
+        </CommandList>
+      </CommandDialog>
     </>
   );
 };
