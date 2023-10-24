@@ -4,14 +4,7 @@ import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
 import { ChannelType, MemberRole } from "@prisma/client";
 
-type Params = {
-  values: {
-    name: string;
-    type: ChannelType;
-  };
-};
-
-export async function POST(request: Request, { params }: { params: Params }) {
+export async function POST(request: Request) {
   try {
     const profile = await currentProfile();
 
@@ -26,7 +19,7 @@ export async function POST(request: Request, { params }: { params: Params }) {
       return new NextResponse("Server ID missing", { status: 400 });
     }
 
-    const { name, type } = params.values;
+    const { name, type } = await request.json();
 
     if (!name) {
       return new NextResponse("Name missing", { status: 400 });

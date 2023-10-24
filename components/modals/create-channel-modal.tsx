@@ -68,7 +68,6 @@ const CreateChannelModal = () => {
         url: "/api/channels",
         query: { serverId: params?.serverId },
       });
-
       await axios.post(url, values);
 
       onClose();

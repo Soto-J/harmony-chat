@@ -1,9 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
-import { Hash, Mic, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
+import { Edit, Hash, Mic, Trash, Video } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+import ActionTooltip from "@/components/action-tooltip";
 
 type ServerChannelProps = {
   channel: Channel;
@@ -49,6 +51,41 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
       >
         {channel.name}
       </span>
+
+      {channel.name !== "general" && role !== MemberRole.GUEST && (
+        <div className="ml-auto flex items-center gap-x-2">
+          <ActionTooltip label="Edit">
+            <Edit
+              className="
+                hidden 
+                h-4 
+                w-4 
+                text-zinc-500 
+                transition 
+                hover:text-zinc-600 
+                group-hover:block 
+                dark:text-zinc-400 
+                dark:hover:text-zinc-300
+              "
+            />
+          </ActionTooltip>
+          <ActionTooltip label="Trash">
+            <Trash
+              className="
+                hidden 
+                h-4 
+                w-4 
+                text-zinc-500 
+                transition 
+                hover:text-zinc-600 
+                group-hover:block 
+                dark:text-zinc-400 
+                dark:hover:text-zinc-300
+              "
+            />
+          </ActionTooltip>
+        </div>
+      )}
     </button>
   );
 };

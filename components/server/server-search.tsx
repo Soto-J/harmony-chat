@@ -34,9 +34,8 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
   // Keyboard shortcut to open the command dialog
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
-
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
         setIsOpen((prev) => !prev);
       }
     };

@@ -131,7 +131,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
 
         <Separator className="my-2 rounded-md bg-zinc-200 dark:bg-zinc-700" />
 
-        {textChannels?.length && (
+        {!!textChannels?.length && (
           <div className="mb-2">
             <ServerSection
               label="Text Channels"
@@ -139,6 +139,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="channels"
               channelType={ChannelType.TEXT}
             />
+
             {textChannels.map((channel) => (
               <ServerChannel
                 key={channel.id}
@@ -149,6 +150,24 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ))}
           </div>
         )}
+
+        <div className="mb-2">
+          <ServerSection
+            label="Voice Channels"
+            role={profileRole}
+            sectionType="channels"
+            channelType={ChannelType.VOICE}
+          />
+          {!!voiceChannels?.length &&
+            voiceChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                server={server}
+                role={profileRole}
+              />
+            ))}
+        </div>
       </ScrollArea>
     </div>
   );
