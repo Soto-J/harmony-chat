@@ -11,3 +11,9 @@ export type ServerWithChannelsAndMembers = Prisma.ServerGetPayload<
 export type ServerWithMemberWithProfiles = Server & {
   members: (Member & { profile: Profile })[];
 };
+
+const members = Prisma.validator<Prisma.MemberFindManyArgs>()({
+  include: { profile: true },
+});
+
+export type MemberWithProfile = Prisma.MemberGetPayload<typeof members>;

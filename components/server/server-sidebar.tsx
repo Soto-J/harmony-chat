@@ -205,7 +205,11 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             />
             <div className="mt-1">
               {members.map((member) => (
-                <ServerMembers />
+                <ServerMembers
+                  key={member.id}
+                  member={member}
+                  server={server}
+                />
               ))}
             </div>
           </section>

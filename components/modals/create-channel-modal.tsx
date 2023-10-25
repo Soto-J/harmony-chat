@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -48,7 +49,12 @@ const formSchema = z.object({
 const CreateChannelModal = () => {
   const router = useRouter();
   const params = useParams();
-  const { isOpen, onClose, modalType } = useModalStore();
+  const {
+    isOpen,
+    onClose,
+    modalType,
+    data: { channelType },
+  } = useModalStore();
 
   const isModalOpen = isOpen && modalType === "createChannel";
 
@@ -56,9 +62,17 @@ const CreateChannelModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channelType || ChannelType.TEXT,
     },
   });
+
+  useEffect(() => {
+    if (channelType) {
+      form.setValue("type", channelType);
+    } else {
+      form.setValue("type", ChannelType.TEXT);
+    }
+  }, [channelType, form]);
 
   const isLoading = form.formState.isSubmitting;
 
@@ -141,7 +155,7 @@ const CreateChannelModal = () => {
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={channelType}
                     >
                       <FormControl>
                         <SelectTrigger
