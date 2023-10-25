@@ -151,15 +151,16 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
           </div>
         )}
 
-        <div className="mb-2">
-          <ServerSection
-            label="Voice Channels"
-            role={profileRole}
-            sectionType="channels"
-            channelType={ChannelType.VOICE}
-          />
-          {!!voiceChannels?.length &&
-            voiceChannels.map((channel) => (
+        {!!voiceChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              label="Voice Channels"
+              role={profileRole}
+              sectionType="channels"
+              channelType={ChannelType.VOICE}
+            />
+
+            {voiceChannels.map((channel) => (
               <ServerChannel
                 key={channel.id}
                 channel={channel}
@@ -167,7 +168,8 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 role={profileRole}
               />
             ))}
-        </div>
+          </div>
+        )}
       </ScrollArea>
     </div>
   );

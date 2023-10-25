@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
-import { ChannelType, MemberRole } from "@prisma/client";
+import { MemberRole } from "@prisma/client";
 
 export async function POST(request: Request) {
   try {

@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
-import { Edit, Hash, Mic, Trash, Video } from "lucide-react";
+import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import ActionTooltip from "@/components/action-tooltip";
@@ -24,6 +24,9 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
   const params = useParams();
 
   const Icon = iconMap[channel.type];
+
+  const onEdit = async () => {};
+  const onDelete = async () => {};
 
   return (
     <button
@@ -51,11 +54,15 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
       >
         {channel.name}
       </span>
+      {channel.name === "general" && (
+        <Lock className="ml-auto h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+      )}
 
       {channel.name !== "general" && role !== MemberRole.GUEST && (
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit">
             <Edit
+              onClick={onEdit}
               className="
                 hidden 
                 h-4 
@@ -71,6 +78,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
           </ActionTooltip>
           <ActionTooltip label="Trash">
             <Trash
+              onClick={onDelete}
               className="
                 hidden 
                 h-4 
