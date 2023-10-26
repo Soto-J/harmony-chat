@@ -76,7 +76,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
               "
             />
           </ActionTooltip>
-          <ActionTooltip label="Trash">
+          <ActionTooltip label="Delete">
             <Trash
               onClick={onDelete}
               className="
