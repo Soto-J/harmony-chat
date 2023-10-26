@@ -8,6 +8,16 @@ import qs from "query-string";
 import { ServerWithChannelsAndMembers } from "@/types";
 import { MemberRole } from "@prisma/client";
 import { useModalStore } from "@/hooks/use-modal-store";
+import {
+  Check,
+  Gavel,
+  Loader2,
+  MoreVertical,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldQuestion,
+} from "lucide-react";
 
 import {
   Dialog,
@@ -29,16 +39,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import UserAvatar from "@/components/user-avatar";
-import {
-  Check,
-  Gavel,
-  Loader2,
-  MoreVertical,
-  Shield,
-  ShieldAlert,
-  ShieldCheck,
-  ShieldQuestion,
-} from "lucide-react";
+
 
 const roleIconMap = {
   GUEST: null,

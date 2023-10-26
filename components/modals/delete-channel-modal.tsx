@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import qs from "query-string";
+
+import { useModalStore } from "@/hooks/use-modal-store";
 
 import {
   Dialog,
@@ -12,28 +15,31 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useModalStore } from "@/hooks/use-modal-store";
 import { Button } from "@/components/ui/button";
 
-const DeleteServerModal = () => {
+const DeleteChannelModal = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const {
     isOpen,
-    onOpen,
     onClose,
     modalType,
-    data: { server },
+    data: { server, channel },
   } = useModalStore();
 
-  const isModalOpen = isOpen && modalType === "deleteServer";
+  const isModalOpen = isOpen && modalType === "deleteChannel";
 
   const onConfirm = async () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/servers/${server?.id}`);
+      const url = qs.stringifyUrl({
+        url: `/api/channels/${channel?.id}`,
+        query: { serverId: server?.id },
+      });
+
+      await axios.delete(url);
 
       onClose();
       router.refresh();
@@ -44,19 +50,19 @@ const DeleteServerModal = () => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Delete Server
+            Delete Channel
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Are you sure you want to do this?
             <br />
             <span className="font-semibold text-indigo-500">
-              {server?.name}
+              #{channel?.name}
             </span>{" "}
             will be permanently deleted.
           </DialogDescription>
@@ -81,4 +87,4 @@ const DeleteServerModal = () => {
   );
 };
 
-export default DeleteServerModal;
+export default DeleteChannelModal;

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import {
   Dialog,
@@ -12,8 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { useModalStore } from "@/hooks/use-modal-store";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 const LeaveServerModal = () => {
   const [isLoading, setIsLoading] = useState(false);

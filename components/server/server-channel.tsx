@@ -6,6 +6,8 @@ import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import ActionTooltip from "@/components/action-tooltip";
+import { useModalStore } from "@/hooks/use-modal-store";
+import { MouseEvent } from "react";
 
 type ServerChannelProps = {
   channel: Channel;
@@ -22,15 +24,25 @@ const iconMap = {
 const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
   const router = useRouter();
   const params = useParams();
+  const { onOpen } = useModalStore();
 
   const Icon = iconMap[channel.type];
 
-  const onEdit = async () => {};
-  const onDelete = async () => {};
+  const onEdit = async (e: MouseEvent<SVGSVGElement>) => {
+    e.stopPropagation();
+
+    onOpen("editChannel", { server, channel });
+  };
+
+  const onDelete = async (e: MouseEvent<SVGSVGElement>) => {
+    e.stopPropagation();
+
+    onOpen("deleteChannel", { server, channel });
+  };
 
   return (
     <button
-      onClick={() => {}}
+      onClick={() => router.push(`/channels/${channel.id})`)}
       className={cn(
         "group mb-1 flex w-full items-center gap-x-2 rounded-md px-2 py-2 transition hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50",
         params?.channelId === channel.id && "bg-zinc-700 dark:bg-zinc-700",
