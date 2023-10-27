@@ -140,16 +140,16 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="channels"
               channelType={ChannelType.TEXT}
             />
-            {textChannels.map((channel) => (
-              <div className="mt-1">
+            <div className="space-y-[2px]">
+              {textChannels.map((channel) => (
                 <ServerChannel
                   key={channel.id}
                   channel={channel}
                   server={server}
                   role={profileRole}
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </section>
         )}
 
@@ -161,16 +161,16 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="channels"
               channelType={ChannelType.VOICE}
             />
-            {voiceChannels.map((channel) => (
-              <div className="mt-1">
+            <div className="space-y-[2px]">
+              {voiceChannels.map((channel) => (
                 <ServerChannel
                   key={channel.id}
                   channel={channel}
                   server={server}
                   role={profileRole}
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </section>
         )}
 
@@ -182,7 +182,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="channels"
               channelType={ChannelType.VIDEO}
             />
-            <div className="mt-1">
+            <div className="space-y-[2px]">
               {videoChannels.map((channel) => (
                 <ServerChannel
                   key={channel.id}
@@ -203,7 +203,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="members"
               server={server}
             />
-            <div className="mt-1">
+            <div className="space-y-[2px]">
               {members.map((member) => (
                 <ServerMembers
                   key={member.id}
