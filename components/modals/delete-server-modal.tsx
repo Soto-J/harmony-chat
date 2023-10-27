@@ -21,7 +21,6 @@ const DeleteServerModal = () => {
   const router = useRouter();
   const {
     isOpen,
-    onOpen,
     onClose,
     modalType,
     data: { server },

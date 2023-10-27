@@ -33,7 +33,7 @@ const DeleteChannelModal = () => {
   const onConfirm = async () => {
     try {
       setIsLoading(true);
-
+      
       const url = qs.stringifyUrl({
         url: `/api/channels/${channel?.id}`,
         query: { serverId: server?.id },
@@ -43,7 +43,7 @@ const DeleteChannelModal = () => {
 
       onClose();
       router.refresh();
-      router.push("/");
+      router.push(`/servers/${server?.id}`);
     } catch (error) {
       console.log(error);
     } finally {
