@@ -11,7 +11,6 @@ import UserAvatar from "../user-avatar";
 
 type ServerMembersProps = {
   member: MemberWithProfile;
-  server: Server;
 };
 
 const roleIconMap = {
@@ -22,14 +21,19 @@ const roleIconMap = {
   [MemberRole.GUEST]: null,
 };
 
-const ServerMembers = ({ member, server }: ServerMembersProps) => {
+const ServerMembers = ({ member }: ServerMembersProps) => {
   const router = useRouter();
   const params = useParams();
 
   const icon = roleIconMap[member.role];
 
+  const onClick = () => {
+    router.push(`/servers/${params.serverId}/conversations/${member.id}`);
+  };
+
   return (
     <button
+      onClick={onClick}
       className={cn(
         "group mb-1 flex w-full items-center gap-x-2 rounded-md px-2 py-2 transition hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50",
         params?.memberId === member.id && "bg-zinc-700/20 dark:bg-zinc-700",
@@ -41,7 +45,7 @@ const ServerMembers = ({ member, server }: ServerMembersProps) => {
       />
       <span
         className={cn(
-          "text-sm font-semibold text-zinc-500 transition group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300",
+          "text-sm font-semibold capitalize text-zinc-500 transition group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300",
           params.memberId === member.id && "text-primary dark:text-zinc-200",
         )}
       >

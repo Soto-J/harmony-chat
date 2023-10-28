@@ -32,7 +32,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
     router.push(`/servers/${params.serverId}/channels/${channel.id}`);
   };
 
-  const onEditOrDelete = async (
+  const onEditOrDelete = (
     e: MouseEvent<SVGSVGElement>,
     modalType: ModalType,
   ) => {
