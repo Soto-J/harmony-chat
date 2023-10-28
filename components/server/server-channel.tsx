@@ -6,7 +6,7 @@ import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import ActionTooltip from "@/components/action-tooltip";
-import { useModalStore } from "@/hooks/use-modal-store";
+import { ModalType, useModalStore } from "@/hooks/use-modal-store";
 import { MouseEvent } from "react";
 
 type ServerChannelProps = {
@@ -28,21 +28,22 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
 
   const Icon = iconMap[channel.type];
 
-  const onEdit = async (e: MouseEvent<SVGSVGElement>) => {
-    e.stopPropagation();
-
-    onOpen("editChannel", { server, channel });
+  const onClick = () => {
+    router.push(`/servers/${params.serverId}/channels/${channel.id}`);
   };
 
-  const onDelete = async (e: MouseEvent<SVGSVGElement>) => {
+  const onEditOrDelete = async (
+    e: MouseEvent<SVGSVGElement>,
+    modalType: ModalType,
+  ) => {
     e.stopPropagation();
 
-    onOpen("deleteChannel", { server, channel });
+    onOpen(modalType, { server, channel });
   };
 
   return (
     <button
-      onClick={() => router.push(`/channels/${channel.id})`)}
+      onClick={onClick}
       className={cn(
         "group mb-1 flex w-full items-center gap-x-2 rounded-md px-2 py-2 transition hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50",
         params?.channelId === channel.id && "bg-zinc-700 dark:bg-zinc-700",
@@ -74,7 +75,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit">
             <Edit
-              onClick={onEdit}
+              onClick={(e) => onEditOrDelete(e, "editChannel")}
               className="
                 hidden 
                 h-4 
@@ -90,7 +91,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
           </ActionTooltip>
           <ActionTooltip label="Delete">
             <Trash
-              onClick={onDelete}
+              onClick={(e) => onEditOrDelete(e, "deleteChannel")}
               className="
                 hidden 
                 h-4 

@@ -1,13 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { ChannelType } from "@prisma/client";
 
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import qs from "query-string";
+import { ChannelType } from "@prisma/client";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useModalStore } from "@/hooks/use-modal-store";
 
 import {
@@ -34,7 +35,6 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -154,7 +154,7 @@ const EditChannelModal = () => {
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
-                      defaultValue={channel?.type}
+                      defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger
