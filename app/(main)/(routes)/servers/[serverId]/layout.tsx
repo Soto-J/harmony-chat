@@ -1,8 +1,9 @@
+import { redirect } from "next/navigation";
+
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { currentProfile } from "@/lib/current-profile"
-;
+import { currentProfile } from "@/lib/current-profile";
+
 import ServerSidebar from "@/components/server/server-sidebar";
 
 type ServerIdLayoutProps = {

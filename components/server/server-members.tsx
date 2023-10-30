@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 
 import { MemberWithProfile } from "@/types";
-import { MemberRole, Server } from "@prisma/client";
+import { MemberRole } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
 import { ShieldAlert, ShieldCheck } from "lucide-react";

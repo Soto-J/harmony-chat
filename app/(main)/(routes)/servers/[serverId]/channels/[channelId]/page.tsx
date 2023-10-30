@@ -1,7 +1,7 @@
 import React from "react";
 
 const page = () => {
-  return <div>page</div>;
+  return <div>Channel ID Page</div>;
 };
 
 export default page;

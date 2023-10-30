@@ -201,7 +201,6 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               label="Members"
               role={profileRole}
               sectionType="members"
-              server={server}
             />
             <div className="space-y-[2px]">
               {members.map((member) => (
